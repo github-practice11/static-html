@@ -1,1 +1,29 @@
-hello
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("my-html-app:latest", ".")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    docker.image("my-html-app:latest").run("-p 8080:80")
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                docker.image("my-html-app:latest").stop()
+                docker.image("my-html-app:latest").remove()
+            }
+        }
+    }
+}
