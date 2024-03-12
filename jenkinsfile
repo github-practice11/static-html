@@ -16,6 +16,13 @@ pipeline {
                 }
             }
         }
+        stage('Create Directory on EC2') {
+            steps {
+                script {
+                    sshScript remote: '3.17.161.195', user: 'ubuntu', script: 'mkdir /home/ubuntu/my_project'
+                }
+            }
+        }
     }
 
     post {
@@ -27,3 +34,4 @@ pipeline {
         }
     }
 }
+ 
